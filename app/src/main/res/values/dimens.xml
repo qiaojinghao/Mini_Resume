@@ -9,7 +9,6 @@
     <dimen name="user_picture_jumbo_height">180dp</dimen>
 
     <dimen name="icon_button_size">24dp</dimen>
-    <item name="icon_button_alpha" format="float" type="dimen">0.7</item>
 
     <dimen name="caption_text_size">25sp</dimen>
 

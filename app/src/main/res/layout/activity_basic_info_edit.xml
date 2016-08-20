@@ -39,8 +39,10 @@
         android:id="@+id/basic_info_edit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_medium"
-        android:hint="Your name"/>
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_marginLeft="@dimen/spacing_medium"
+        android:layout_marginRight="@dimen/spacing_medium"
+        android:hint="@string/basic_info_edit_name_hint"/>
 
     <EditText
         android:id="@+id/basic_info_edit_email"
@@ -48,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_medium"
         android:layout_marginRight="@dimen/spacing_medium"
-        android:hint="Your email"/>
+        android:inputType="textEmailAddress"
+        android:hint="@string/basic_info_edit_email_hint"/>
 
 </LinearLayout>

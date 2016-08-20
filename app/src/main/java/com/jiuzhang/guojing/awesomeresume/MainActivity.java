@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         boolean found = false;
         for (int i = 0; i < experiences.size(); ++i) {
             Experience e = experiences.get(i);
-            if (e.company.equals(experience.company)) {
+            if (e.id.equals(experience.id)) {
                 found = true;
                 experiences.set(i, experience);
                 break;

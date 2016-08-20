@@ -38,7 +38,6 @@
                     android:layout_height="@dimen/icon_button_size"
                     android:layout_marginLeft="@dimen/spacing_xsmall"
                     android:src="@drawable/ic_mode_edit_black_18dp"
-                    android:alpha="@dimen/icon_button_alpha"
                     android:background="?attr/selectableItemBackground" />
 
             </LinearLayout>
@@ -57,7 +56,8 @@
                 android:layout_width="@dimen/user_picture_size"
                 android:layout_height="@dimen/user_picture_size"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/user_ghost"/>
+                android:src="@drawable/user_ghost"
+                android:contentDescription="@string/user_picture"/>
 
         </RelativeLayout>
 
@@ -79,11 +79,11 @@
 
             <ImageButton
                 android:id="@+id/add_education_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:src="@drawable/ic_add_black_18dp"
-                android:alpha="0.7"
-                android:background="?attr/selectableItemBackground"/>
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/add_education"/>
 
         </LinearLayout>
 
@@ -113,11 +113,11 @@
 
             <ImageButton
                 android:id="@+id/add_experience_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:src="@drawable/ic_add_black_18dp"
-                android:alpha="0.7"
-                android:background="?attr/selectableItemBackground"/>
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/add_experience"/>
 
         </LinearLayout>
 
@@ -147,11 +147,11 @@
 
             <ImageButton
                 android:id="@+id/add_project_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_button_size"
+                android:layout_height="@dimen/icon_button_size"
                 android:src="@drawable/ic_add_black_18dp"
-                android:alpha="0.7"
-                android:background="?attr/selectableItemBackground"/>
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/add_project"/>
 
         </LinearLayout>
 
