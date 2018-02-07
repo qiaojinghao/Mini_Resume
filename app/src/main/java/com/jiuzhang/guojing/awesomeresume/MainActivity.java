@@ -17,6 +17,8 @@ import com.jiuzhang.guojing.awesomeresume.model.BasicInfo;
 import com.jiuzhang.guojing.awesomeresume.model.Education;
 import com.jiuzhang.guojing.awesomeresume.model.Experience;
 import com.jiuzhang.guojing.awesomeresume.model.Project;
+import com.jiuzhang.guojing.awesomeresume.model.Skill;
+import com.jiuzhang.guojing.awesomeresume.util.BirthUtils;
 import com.jiuzhang.guojing.awesomeresume.util.DateUtils;
 import com.jiuzhang.guojing.awesomeresume.util.ImageUtils;
 import com.jiuzhang.guojing.awesomeresume.util.ModelUtils;
@@ -31,16 +33,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQ_CODE_EDIT_EXPERIENCE = 101;
     private static final int REQ_CODE_EDIT_PROJECT = 102;
     private static final int REQ_CODE_EDIT_BASIC_INFO = 103;
+    private static final int REQ_CODE_EDIT_SKILL = 104;
 
     private static final String MODEL_EDUCATIONS = "educations";
     private static final String MODEL_EXPERIENCES = "experiences";
     private static final String MODEL_PROJECTS = "projects";
     private static final String MODEL_BASIC_INFO = "basic_info";
+    private static final String MODEL_SKILLS = "skills";
 
     private BasicInfo basicInfo;
     private List<Education> educations;
     private List<Experience> experiences;
     private List<Project> projects;
+    private List<Skill> skills;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
                         updateProject(project);
                     }
                     break;
+                case REQ_CODE_EDIT_SKILL:
+                    String skillID = data.getStringExtra(SkillEditActivity.KEY_SKILL_ID);
+                    if(skillID != null){
+                        deleteSkill(skillID);
+                    }else {
+                        Skill skill = data.getParcelableExtra(SkillEditActivity.KEY_SKILL);
+                        updateSkill(skill);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -118,20 +134,38 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQ_CODE_EDIT_PROJECT);
             }
         });
+        ImageButton addSkillBtn = (ImageButton) findViewById(R.id.add_skill_btn);
+        addSkillBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SkillEditActivity.class);
+                startActivityForResult(intent, REQ_CODE_EDIT_SKILL);
+            }
+        });
 
         setupBasicInfo();
         setupEducations();
         setupExperiences();
         setupProjects();
+        setupSkills();
     }
 
     private void setupBasicInfo() {
         ((TextView) findViewById(R.id.name)).setText(TextUtils.isEmpty(basicInfo.name)
-                                                             ? "Your name"
-                                                             : basicInfo.name);
+                ? "Your name"
+                : basicInfo.name);
+
+        ((TextView) findViewById(R.id.user_birth)).setText(basicInfo.birth == null
+                ? "Birth"
+                : BirthUtils.birthToString(basicInfo.birth));
+
+        ((TextView) findViewById(R.id.user_phone_number)).setText(TextUtils.isEmpty(basicInfo.phoneNum)
+                ? "Phone num"
+                : basicInfo.phoneNum);
+
         ((TextView) findViewById(R.id.email)).setText(TextUtils.isEmpty(basicInfo.email)
-                                                             ? "Your email"
-                                                             : basicInfo.email);
+                ? "Email"
+                : basicInfo.email);
 
         ImageView userPicture = (ImageView) findViewById(R.id.user_picture);
         if (basicInfo.imageUri != null) {
@@ -161,14 +195,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupEducation(View educationView, final Education education) {
-        String dateString = DateUtils.dateToString(education.startDate)
-                + " ~ " + DateUtils.dateToString(education.endDate);
-        ((TextView) educationView.findViewById(R.id.education_school))
-                .setText(education.school + " " + education.major + " (" + dateString + ")");
-        ((TextView) educationView.findViewById(R.id.education_courses))
-                .setText(formatItems(education.courses));
+        ((TextView)educationView.findViewById(R.id.education_school)).setText(education.school+" ("+
+                DateUtils.dateToString(education.startDate)+"-"+DateUtils.dateToString(education.endDate)+")");
+        ((TextView)educationView.findViewById(R.id.education_major)).setText(education.major);
+        if(!education.gpa.equals(""))
+            ((TextView)educationView.findViewById(R.id.education_GPA)).setText("GPA: "+education.gpa);
+        ((TextView)educationView.findViewById(R.id.education_courses)).setText(formatItems(education.courses));
 
-        ImageButton editEducationBtn = (ImageButton) educationView.findViewById(R.id.edit_education_btn);
+        ImageButton editEducationBtn = (ImageButton) educationView.findViewById(R.id.education_edit);
         editEducationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,10 +224,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupExperience(View experienceView, final Experience experience) {
-        String dateString = DateUtils.dateToString(experience.startDate)
+        String dateString;
+        if(!experience.startDate.equals(experience.endDate)){
+            dateString = DateUtils.dateToString(experience.startDate)
                 + " ~ " + DateUtils.dateToString(experience.endDate);
+        }else{
+            dateString = DateUtils.dateToString(experience.startDate);
+        }
         ((TextView) experienceView.findViewById(R.id.experience_company))
                 .setText(experience.company + " (" + dateString + ")");
+        ((TextView) experienceView.findViewById(R.id.experience_title)).setText(experience.title);
         ((TextView) experienceView.findViewById(R.id.experience_details))
                 .setText(formatItems(experience.details));
 
@@ -219,10 +259,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupProject(@NonNull View projectView, final Project project) {
-        String dateString = DateUtils.dateToString(project.startDate)
-                + " ~ " + DateUtils.dateToString(project.endDate);
         ((TextView) projectView.findViewById(R.id.project_name))
-                .setText(project.name + " (" + dateString + ")");
+                .setText(project.name);
         ((TextView) projectView.findViewById(R.id.project_details))
                 .setText(formatItems(project.details));
         projectView.findViewById(R.id.edit_project_btn).setOnClickListener(new View.OnClickListener() {
@@ -233,6 +271,43 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQ_CODE_EDIT_PROJECT);
             }
         });
+    }
+
+    private void setupSkills(){
+        LinearLayout skillListLayout = (LinearLayout) findViewById(R.id.skills_list);
+        skillListLayout.removeAllViews();
+        for (Skill skill : skills) {
+            View skillView = getLayoutInflater().inflate(R.layout.skill_item, null);
+            setupSkill(skillView, skill);
+            skillListLayout.addView(skillView);
+        }
+    }
+
+    private void setupSkill(@NonNull View skillView, final Skill skill) {
+        ((TextView) skillView.findViewById(R.id.skill_type))
+                .setText(skill.type+":");
+        ((TextView) skillView.findViewById(R.id.skill_name))
+                .setText(formatSkill(skill.names));
+        skillView.findViewById(R.id.edit_skill_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SkillEditActivity.class);
+                intent.putExtra(SkillEditActivity.KEY_SKILL, skill);
+                startActivityForResult(intent, REQ_CODE_EDIT_SKILL);
+            }
+        });
+    }
+
+    private String formatSkill(List<String> skills){
+        StringBuilder sb = new StringBuilder();
+        for (String item: skills) {
+            sb.append(item).append(", ");
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
     }
 
     private void loadData() {
@@ -255,6 +330,11 @@ public class MainActivity extends AppCompatActivity {
                                                      MODEL_PROJECTS,
                                                      new TypeToken<List<Project>>(){});
         projects = savedProjects == null ? new ArrayList<Project>() : savedProjects;
+
+        List<Skill> savedSkills = ModelUtils.read(this,
+                MODEL_SKILLS,
+                new TypeToken<List<Skill>>(){});
+        skills = savedSkills == null ? new ArrayList<Skill>() : savedSkills;
     }
 
     public static String formatItems(List<String> items) {
@@ -286,12 +366,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (!found) {
+        if (!found && !isEduNull(education)) {
             educations.add(education);
         }
 
         ModelUtils.save(this, MODEL_EDUCATIONS, educations);
         setupEducations();
+    }
+
+    private boolean isEduNull(Education edu){
+        return edu.school.equals("") && edu.courses.size()==0 && edu.major.equals("");
+    }
+
+    private boolean isExperienceNull(Experience exp){
+        return exp.company.equals("");
     }
 
     private void updateExperience(Experience experience) {
@@ -305,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (!found) {
+        if (!found && !isExperienceNull(experience)) {
             experiences.add(experience);
         }
 
@@ -324,12 +412,39 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (!found) {
+        if (!found && !isProjectEmpty(project)) {
             projects.add(project);
         }
 
         ModelUtils.save(this, MODEL_PROJECTS, projects);
         setupProjects();
+    }
+
+
+    private boolean isProjectEmpty(Project project){
+        return project.name.equals("");
+    }
+
+    private void updateSkill(Skill skill){
+        boolean found = false;
+        for (int i=0; i<skills.size(); ++i){
+            Skill s = skills.get(i);
+            if(TextUtils.equals(s.id, skill.id)){
+                found = true;
+                skills.set(i,skill);
+                break;
+            }
+        }
+
+        if(!found && !isSkillEmpty(skill)){
+            skills.add(skill);
+        }
+        ModelUtils.save(this,MODEL_SKILLS,skills);
+        setupSkills();
+    }
+
+    private boolean isSkillEmpty(Skill skill){
+        return skill.type.equals("");
     }
 
     private void deleteEducation(@NonNull String educationId) {
@@ -369,5 +484,17 @@ public class MainActivity extends AppCompatActivity {
 
         ModelUtils.save(this, MODEL_PROJECTS, projects);
         setupProjects();
+    }
+
+    private void deleteSkill(String skillID){
+        for (int i = 0; i < skills.size(); ++i) {
+            Skill s = skills.get(i);
+            if (TextUtils.equals(s.id, skillID)) {
+                skills.remove(i);
+                break;
+            }
+        }
+        ModelUtils.save(this, MODEL_SKILLS, skills);
+        setupSkills();
     }
 }

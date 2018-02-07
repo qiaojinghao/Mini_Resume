@@ -36,6 +36,8 @@ public class EducationEditActivity extends EditBaseActivity<Education> {
                 .setText(data.school);
         ((EditText) findViewById(R.id.education_edit_major))
                 .setText(data.major);
+        ((EditText)findViewById(R.id.education_edit_gpa))
+                .setText(String.valueOf(data.gpa));
         ((EditText) findViewById(R.id.education_edit_courses))
                 .setText(TextUtils.join("\n", data.courses));
 
@@ -63,6 +65,7 @@ public class EducationEditActivity extends EditBaseActivity<Education> {
 
         data.school = ((EditText) findViewById(R.id.education_edit_school)).getText().toString();
         data.major = ((EditText) findViewById(R.id.education_edit_major)).getText().toString();
+        data.gpa = ((EditText) findViewById(R.id.education_edit_gpa)).getText().toString();
         data.startDate = DateUtils.stringToDate(
                 ((TextView) findViewById(R.id.education_edit_start_date)).getText().toString());
         data.endDate = DateUtils.stringToDate(

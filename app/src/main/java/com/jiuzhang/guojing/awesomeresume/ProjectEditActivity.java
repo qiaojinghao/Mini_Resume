@@ -33,10 +33,6 @@ public class ProjectEditActivity extends EditBaseActivity<Project> {
     protected void setupUIForEdit(@NonNull final Project data) {
         ((EditText) findViewById(R.id.project_edit_name))
                 .setText(data.name);
-        ((EditText) findViewById(R.id.project_edit_start_date))
-                .setText(DateUtils.dateToString(data.startDate));
-        ((EditText) findViewById(R.id.project_edit_end_date))
-                .setText(DateUtils.dateToString(data.endDate));
         ((EditText) findViewById(R.id.project_edit_details))
                 .setText(TextUtils.join("\n", data.details));
         findViewById(R.id.project_edit_delete).setOnClickListener(new View.OnClickListener() {
@@ -57,8 +53,6 @@ public class ProjectEditActivity extends EditBaseActivity<Project> {
         }
 
         data.name = ((EditText) findViewById(R.id.project_edit_name)).getText().toString();
-        data.startDate = DateUtils.stringToDate(((EditText) findViewById(R.id.project_edit_start_date)).getText().toString());
-        data.endDate = DateUtils.stringToDate(((EditText) findViewById(R.id.project_edit_end_date)).getText().toString());
         data.details = Arrays.asList(TextUtils.split(((EditText) findViewById(R.id.project_edit_details)).getText().toString(), "\n"));
 
         Intent resultIntent = new Intent();

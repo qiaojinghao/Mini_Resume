@@ -7,19 +7,19 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/project_edit_name"
+        android:id="@+id/skill_edit_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/project_edit_name_hint"/>
+        android:hint="@string/skill_edit_type_hint"/>
 
     <EditText
-        android:id="@+id/project_edit_details"
+        android:id="@+id/skill_edit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/project_edit_details_hint"/>
+        android:hint="@string/skill_edit_name_hint"/>
 
     <TextView
-        android:id="@+id/project_edit_delete"
+        android:id="@+id/skill_edit_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"

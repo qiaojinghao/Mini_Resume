@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.jiuzhang.guojing.awesomeresume.model.BasicInfo;
+import com.jiuzhang.guojing.awesomeresume.util.BirthUtils;
 import com.jiuzhang.guojing.awesomeresume.util.ImageUtils;
 import com.jiuzhang.guojing.awesomeresume.util.PermissionUtils;
 
@@ -58,6 +59,8 @@ public class BasicInfoEditActivity extends EditBaseActivity<BasicInfo> {
     protected void setupUIForEdit(@NonNull BasicInfo data) {
         ((EditText) findViewById(R.id.basic_info_edit_name))
                 .setText(data.name);
+        ((EditText) findViewById(R.id.basic_info_edit_birth)).setText(BirthUtils.birthToString(data.birth));
+        ((EditText) findViewById(R.id.basic_info_edit_phone)).setText(data.phoneNum);
         ((EditText) findViewById(R.id.basic_info_edit_email))
                 .setText(data.email);
 
@@ -85,9 +88,10 @@ public class BasicInfoEditActivity extends EditBaseActivity<BasicInfo> {
         }
 
         data.name = ((EditText) findViewById(R.id.basic_info_edit_name)).getText().toString();
+        data.birth = BirthUtils.stringToBirth(((EditText) findViewById(R.id.basic_info_edit_birth)).getText().toString());
+        data.phoneNum = ((EditText) findViewById(R.id.basic_info_edit_phone)).getText().toString();
         data.email = ((EditText) findViewById(R.id.basic_info_edit_email)).getText().toString();
         data.imageUri = (Uri) findViewById(R.id.basic_info_edit_image).getTag();
-
         Intent resultIntent = new Intent();
         resultIntent.putExtra(KEY_BASIC_INFO, data);
         setResult(Activity.RESULT_OK, resultIntent);
