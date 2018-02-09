@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 : BirthUtils.birthToString(basicInfo.birth));
 
         ((TextView) findViewById(R.id.user_phone_number)).setText(TextUtils.isEmpty(basicInfo.phoneNum)
-                ? "Phone num"
+                ? "Phone number"
                 : basicInfo.phoneNum);
 
         ((TextView) findViewById(R.id.email)).setText(TextUtils.isEmpty(basicInfo.email)

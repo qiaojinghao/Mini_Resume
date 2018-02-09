@@ -4,8 +4,8 @@
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
 
-    <string name="section_education">Education</string>
-    <string name="section_experience">Experience</string>
+    <string name="section_education">Educations</string>
+    <string name="section_experience">Experiences</string>
     <string name="section_projects">Projects</string>
 
     <string name="user_picture">User picture</string>
