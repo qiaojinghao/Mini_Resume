@@ -14,7 +14,7 @@
             android:id="@+id/education_school"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="CUST(09/2012-06/2016)"
+            tools:text="XX University (09/2012-06/2016)"
             android:layout_weight="1"
             />
 
@@ -34,7 +34,7 @@
             android:id="@+id/education_major"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="optical information science and technology" />
+            tools:text="Electrical engineering" />
 
         <TextView
             android:id="@+id/education_GPA"

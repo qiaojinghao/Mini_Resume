@@ -32,5 +32,5 @@
         android:id="@+id/skill_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Mandarin, English"/>
+        tools:text="Mandarin, English, French"/>
 </LinearLayout>
